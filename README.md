@@ -74,19 +74,20 @@ $ sudo systemctl enable wg-quick@wg0
 
 #### Server Networking dan FireWall
 
-For NAT to work, we need to enable IP forwarding. Open the /etc/sysctl.conf file and add or uncomment the following line:
+For NAT to work, we need to enable IP forwarding. Open the /etc/sysctl.conf file
 ```
 $ sudo nano /etc/sysctl.conf
 ```
+Tambahkan atau hilangkan komen yang ada pada line berikut:
 ```
 net.ipv4.ip_forward=1
 ```
-Save file:
+Save file dengan:
 ```
 $ sudo sysctl -p
 ```
 
-If you are using UFW to manage your firewall you need to open UDP traffic on port 51820:
+Jika menggunakan UFW untuk mengatur firewall maka perlu untuk membuka UDP pada port 51820 dengan:
 ```
 $ sudo ufw allow 51820/udp
 ```
