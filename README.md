@@ -36,10 +36,15 @@ PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -
 ```
 Penjabaran Interface sebagai berikut
 *Address* - Alamat IPv4 atau IPv6.
+
 *SaveConfig* - di set true untuk menyimpan interface yang ada ketika file di non aktifkan.
+
 *ListenPort* - Port yang digunakan untuk menerima connection.
+
 *PrivateKey* - Yaitu PrivateKey yang didapatkan dari generate key yang telah dilakukan.
+
 *PostUp* - Merupakan perintah untuk penyamaran ketika dijalankan yang mana disini menggunakan iptables. Perintah ini akan mengizinkan traffic meninggalkan server dan memberikan client koneksi internet.
+
 *PostDOwn* - Merupakan perintah untuk menghentikan jalannya interface.
 
 Sebelum menjalankan pastikan mengganti ```enp0s3``` dengan nama public interface yang ada pada device. Untuk mengetahuinya dapat dengan cara menjalankan:
