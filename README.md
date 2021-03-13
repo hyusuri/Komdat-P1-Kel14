@@ -1,7 +1,7 @@
 ![1](gambar/wireguard.svg)
 
 
-[WireGuard](#WireGuard) | [Instalasi](#instalasi-pada-Ubuntu-18.04) | [Set up WireGuard pada Server](#setup) | [Set up WireGuard pada Client Linxu](#setupclient) | [Menghubungkan Client dengan VPN](#menghubungkan) | [Referensi](#referensi)
+[WireGuard](#WireGuard) | [Instalasi](#instalasi-pada-Ubuntu-1804) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client Linxu](#set-up-wireguard-pada-client-linux) | [Menghubungkan Client dengan VPN](#menghubungkan-linux-client-dengan-vpn-wireguard) | [Referensi](#referensi)
 :---:|:---:|:---:|:---:|:---:|:---:
 
 
@@ -170,6 +170,7 @@ $ sudo wg-quick down wg0
 
 # Referensi
 [`kembali ke atas`](#)
+
 
 1. [WireGuard](https://www.wireguard.com/) - Wireguard
 2. [WireGuard VPN baru disempurnakan](https://id.wizcase.com/blog/wireguard-vpn-protokol-vpn-baru-dan-disempurnakan/) - idwizcase
