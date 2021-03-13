@@ -92,6 +92,8 @@ Tambahkan atau hilangkan komen yang ada pada line berikut:
 ```
 net.ipv4.ip_forward=1
 ```
+![forward](gambar/forward.png)
+
 Save file dengan:
 ```
 $ sudo sysctl -p
@@ -156,10 +158,14 @@ Pastikan bahwa WireGuard pada server sudah jalan kemudian pada client jalankan p
 ```
 $ sudo wg-quick up wg0
 ```
+![wg-quick](gambar/wgup.png)
+
 Sekarang client sudah terrhubung dengan server. Untuk mengecek dapat menjalankan perintah:
 ```
-$ sudo wg
+$ sudo wg show
 ```
+![wg-show](gambar/wgshow.png)
+
 Kemudian untuk mengecek IP dapat menggunakan google dengan mencari ```what is my ip```
 
 Untuk menghentikan sambungan VPN dapat dengan menjalankan perintah:
