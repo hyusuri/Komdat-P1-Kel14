@@ -1,7 +1,7 @@
 ![1](gambar/wireguard.svg)
 
 
-[WireGuard](#WireGuard) | [Instalasi pada Ubuntu 18.04](#Instalasi-) | [Set up WireGuard pada Server](#setup) | [Set up WireGuard pada Client Linxu](#setupclient) | [Menghubungkan Client dengan VPN](#menghubungkan) | [Referensi](#referensi)
+[WireGuard](#WireGuard) | [Instalasi](#instalasi-pada-Ubuntu-18.04) | [Set up WireGuard pada Server](#setup) | [Set up WireGuard pada Client Linxu](#setupclient) | [Menghubungkan Client dengan VPN](#menghubungkan) | [Referensi](#referensi)
 :---:|:---:|:---:|:---:|:---:|:---:
 
 
