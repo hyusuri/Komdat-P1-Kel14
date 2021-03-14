@@ -1,7 +1,7 @@
 ![1](gambar/wireguard.svg)
 
 
-[WireGuard](#WireGuard) | [Instalasi](#instalasi-pada-Ubuntu-1804) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client Linxu](#set-up-wireguard-pada-client-linux) | [Menghubungkan Client dengan VPN](#menghubungkan-linux-client-dengan-vpn-wireguard) | [Referensi](#referensi)
+[WireGuard](#WireGuard) | [Instalasi](#instalasi-WireGuard) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client](#set-up-wireguard-pada-client) | [Menghubungkan Client dengan VPN](#menghubungkan-linux-client-dengan-vpn-wireguard) | [Referensi](#referensi)
 :---:|:---:|:---:|:---:|:---:|:---:
 
 
@@ -9,28 +9,39 @@
 [`kembali ke atas`](#)
 
 
-**WireGuard** merupakan salah satu VPN (*Virtual Private Network*) sederhana namun cepat dan modern yang menggunakan *cryptography*. WireGuard adalah proyek open source terbaru yang mempercepat VPN sambil membuatnya lebih aman dari sebelumnya. Secara eksplisit protokol ini diklaim lebih baik dari protokol OpenVPN dan IPsec. Awalnya dirilis hanya untuk sistem operasi Linux tetapi sekarang kompatibel dengan banyak platform lain.
+**WireGuard** merupakan salah satu VPN (*Virtual Private Network*) sederhana namun cepat dan modern yang menggunakan *cryptography* yang canggih. WireGuard adalah proyek open source terbaru yang mempercepat VPN sambil membuatnya lebih aman dari sebelumnya. Secara eksplisit protokol ini diklaim lebih baik dari protokol OpenVPN dan IPsec. Awalnya dirilis hanya untuk sistem operasi Linux tetapi sekarang kompatibel dengan banyak platform lain.
 
-# Instalasi pada Ubuntu 18.04
+# Instalasi WireGuard
 [`kembali ke atas`](#)
 
-### Installing WireGuard
-Untuk menginstall jalankan printah:
+### Ubuntu / Debian
+Untuk menginstall pada distro Ubuntu atau Debian jalankan printah:
+```bash
+$ sudo apt-get update; sudo apt-get upgrade -y
+$ sudo apt-get install wireguard -y
 ```
-$ sudo apt-get update
-$ sudo apt-get install wireguard
-```
+
+### Windows (Client)
+Unduh dan install programnya pada [link](https://download.wireguard.com/windows-client/wireguard-installer.exe) berikut.
+
+### Sistem Operasi Lainnya
+Instalasi program pada sistem operasi lainnya dapat dilihat pada [Installation Page WireGuard](https://www.wireguard.com/install/).
+
 # Set up WireGuard pada Server
 [`kembali ke atas`](#)
 
+### Membuat Private dan Public Keys
+WireGuard bekerja dengan cara mengenkripsi koneksi diantara client dan server dengan sepasang *cryptographic keys* bernama *public key* dan *private key*. Koneksi yang dilakukan antara client dan server akan dienkripsi dengan menggunakan public key milik pihak tujuan dan hanya dapat dibaca dengan mendekripsinya dengan private key yang dimilik pihak tujuan.
+
 Untuk melakukan generate key jalankan perintah:
-```
+```bash
 $ wg genkey | sudo tee /etc/wireguard/privatekey | wg pubkey | sudo tee /etc/wireguard/publickey
 ```
-File akan digenerate pada directory /etc/wireguard. Simpan privatekey dan jangan di*share* ke siapapun.
+Perintah ini akan membuat file `privatekey` dan `publickey` yang tersimpan di directory `/etc/wireguard`. Simpan `privatekey` dan jangan di*share* ke siapapun.
 
-Buat file interface dengan nama apapun (disini kita gunakan ```wg0.conf```) dengan menjalankan perintah:
-```
+### Membuat File Konfigurasi Server
+Buat file konfigurasi berekstensi `.conf` dengan nama apapun (disini kita gunakan ```wg0.conf```) dengan menjalankan perintah:
+```bash
 $ sudo nano /etc/wireguard/wg0.conf
 ```
 Kemudian pada file ```wg0.conf``` buat interface seperti berikut:
@@ -43,83 +54,99 @@ PrivateKey = SERVER_PRIVATE_KEY
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o enp0s3 -j MASQUERADE
 ```
-Penjabaran Interface sebagai berikut
+Penjabaran Interface sebagai berikut :
 
-*Address* - Alamat IPv4 atau IPv6.
+- *Address* - Alamat IPv4 atau IPv6 yang digunakan sebagai identifikasi server pada network WireGuard.
+- *SaveConfig* - Jika diset *true*, akan menyimpan konfigurasi interface yang digunakan ketika WireGuard dimatikan .
+- *ListenPort* - Port yang digunakan untuk menerima connection.
+- *PrivateKey* - Yaitu PrivateKey yang digunakan oleh server dan didapatkan dari generate key yang telah dilakukan.
+- *PostUp* - Merupakan perintah yang akan dijalankan sebelum mengaktifkan interface WireGuard.
+- *PostDown* - Merupakan perintah yang akan dijalankan sebelum mematikan interface WireGuard.
 
-*SaveConfig* - di set true untuk menyimpan interface yang ada ketika file di non aktifkan.
-
-*ListenPort* - Port yang digunakan untuk menerima connection.
-
-*PrivateKey* - Yaitu PrivateKey yang didapatkan dari generate key yang telah dilakukan.
-
-*PostUp* - Merupakan perintah untuk penyamaran ketika dijalankan yang mana disini menggunakan iptables. Perintah ini akan mengizinkan traffic meninggalkan server dan memberikan client koneksi internet.
-
-*PostDOwn* - Merupakan perintah untuk menghentikan jalannya interface.
+Untuk penjabaran konfigurasi WiregGuard lebih lanjut dapat diakses pada [ManPages wg-quick](https://manpages.debian.org/unstable/wireguard-tools/wg-quick.8.en.html#CONFIGURATION)
 
 Sebelum menjalankan pastikan mengganti ```enp0s3``` dengan nama public interface yang ada pada device. Untuk mengetahuinya dapat dengan cara menjalankan:
-```
+```bash
 $ ip -o -4 route show to default | awk '{print $5}'
 ```
 
+Command yang digunakan pada bagian `PostUp` dan `PostDown` berfungsi untuk membuka dan meneruskan *request* client kepada suatu server/webservice sehingga client yang terkoneksi ke server WireGuard dapat mengakses internet.
+
 Untuk membuat wg0.conf dan privatekey tidak bisa dilihat untuk normal user maka ganti permission mejadi 600:
-```
+```bash
 $ sudo chmod 600 /etc/wireguard/{privatekey,wg0.conf}
 ```
 
-Setelah selesai maka dapat dijalankan wg0 interfacenya dengan:
-```
+### Menjalankan Interface WireGuard
+Setelah selesai membuat konfigurasi, maka interface wg0 dapat dijalankan dengan perintah:
+```bash
 $ sudo wg-quick up wg0
 ```
 
-Untuk melihat apakah berjalan atau tidak pada:
-```
+Untuk melihat apakah berjalan atau tidak dan client yang terkoneksi pada:
+```bash
 $ sudo wg show wg0
 ```
 
-Untuk membuat WireGuard interface saat booting jalankan perintah:
-```
+Untuk membuat WireGuard interface berjalan saat booting jalankan perintah:
+```bash
 $ sudo systemctl enable wg-quick@wg0
 ```
 
-### Server Networking dan FireWall
+### Server Networking dan Firewall
 
-untuk enable IP forwarding buka file /etc/sysctl.conf
-```
+Untuk enable IP forwarding buka file /etc/sysctl.conf
+```bash
 $ sudo nano /etc/sysctl.conf
 ```
-Tambahkan atau hilangkan komen yang ada pada line berikut:
+Tambahkan atau hilangkan komen yang ada pada line berikut lalu simpan:
 ```
 net.ipv4.ip_forward=1
 ```
 ![forward](gambar/forward.png)
 
-Save file dengan:
-```
+Untuk menerapkan perubahan tersebut jalankan :
+```bash
 $ sudo sysctl -p
 ```
+#### Port Forwarding
+Supaya client dapat terkoneksi ke server, perlu dibukanya port WireGuard yang digunakan untuk protokol UDP.
 
-Jika menggunakan UFW untuk mengatur firewall maka perlu untuk membuka UDP pada port 51820 dengan:
+Jika menggunakan UFW untuk mengatur firewall maka perlu untuk membuka UDP pada port WireGuard yang digunakan (contoh ini menggunakan 51820) dengan:
 ```
 $ sudo ufw allow 51820/udp
 ```
 
-# Set up WireGuard pada Client Linux
+# Set up WireGuard pada Client
 [`kembali ke atas`](#)
 
+### Ubuntu / Debian
 Pertama install WireGuard sama seperti instalasi pada server. Kemudian lakukan generate public dan private key dengan menjalankan:
-```
+```bash
 $ wg genkey | sudo tee /etc/wireguard/privatekey | wg pubkey | sudo tee /etc/wireguard/publickey
 ```
-setelah melakukan generate key, selanjutnya membuat file ```wg0.conf``` dengan:
-```
+Setelah melakukan generate key, selanjutnya membuat file ```wg0.conf``` dengan:
+```bash
 $ sudo nano /etc/wireguard/wg0.conf
 ```
-kemudian isi wg0.conf dengan:
+kemudian isi wg0.conf sesuai dengan [Konfigurasi Client Interface](#konfigurasi-client-interface) lalu simpan.
+
+### Windows
+Pertama install wireguard pada windows. Setelah itu klik panah disamping `Add Tunnel` dan pilih `Add empty tunnel...`
+![Add empty tunnel...](gambar/windows_client_new.png)
+
+Kemudian isi nama sesuai keinginan dan konfigurasinya sesuai dengan [Konfigurasi Client Interface](#konfigurasi-client-interface).
+![Windows config](gambar/windows_client_config.png)
+
+Simpan public key yang diberikan dan klik Save.
+
+### Konfigurasi Client Interface
+Untuk konfigurasi client tidak berbeda jauh dengan konfigurasi server
 ```
 [Interface]
 PrivateKey = CLIENT_PRIVATE_KEY
-Address = 10.0.0.2/24
+Address = 10.0.0.XXX/24
+DNS = 1.1.1.1, 1.0.0.1
 
 
 [Peer]
@@ -129,50 +156,58 @@ AllowedIPs = 0.0.0.0/0
 ```
 **Untuk interface**:
 
-*PrivateKey* - Privatekey client yang sudah di generate sebelumnya.
-
-*Address* - alamat untuk wg0 interface.
+- *PrivateKey* - Privatekey client yang sudah di generate sebelumnya.
+- *Address* - Alamat IPv4 atau IPv6 yang digunakan sebagai identifikasi client pada network WireGuard. Pastikan IP yang digunakan terdapat didalam subnet yang digunakan server dan IP belum digunakan oleh client lainnya.
+- *DNS* - IP DNS server yang akan digunakan.
 
 **Untuk Peer**
 
-*PublicKey* - Publickey milik server yang di generate pada server.
+- *PublicKey* - Publickey milik server yang di generate pada server.
+- *Endpoint* - IP address dari server yang akan disambungkan dan diikuti oleh port listening yang digunakan server.
+- *AllowedIPs* - Alamat ip yang mana trafic masuk yang diizinkan dan trafic keluar yang diarahkan. IP `0.0.0.0/0` menandakan seluruh koneksi diperbolehkan.
 
-*Endpoint* - IP address dari server yang akan disambungkan dan diikuti oleh port yang listening pada server.
+Untuk penjabaran konfigurasi WiregGuard lebih lanjut dapat diakses pada [ManPages wg-quick](https://manpages.debian.org/unstable/wireguard-tools/wg-quick.8.en.html#CONFIGURATION)
 
-*AllowedIPs* - alamat ip yang mana trafic masuk yang diizinkan dan trafic keluar yang diarahkan.
+### Menambahkan Client Peer pada Server
 
-
-#### Menambahkan Client Peer pada Server
-
-untuk menambahkan client peer jalankan:
-```
-$ sudo wg set wg0 peer CLIENT_PUBLIC_KEY allowed-ips 10.0.0.2
+Sebelum WireGuard client bisa digunakan, perlu ditambahkan public key client ke server. Untuk menambahkan client peer jalankan:
+```bash
+$ sudo wg set wg0 peer CLIENT_PUBLIC_KEY allowed-ips CLIENT_IP_ADDRESS
 ```
 
 ```CLIENT_PUBLIC_KEY``` adalah publickey yang di generate pada komputer client.
+```CLIENT_IP_ADDRESS``` adalah IP address client WireGuard yang digunakan (contoh : `10.0.0.2`).
 
-# Menghubungkan Linux Client dengan VPN WireGuard
+# Menghubungkan Client dengan VPN WireGuard
 [`kembali ke atas`](#)
 
+### Ubuntu / Debian
 Pastikan bahwa WireGuard pada server sudah jalan kemudian pada client jalankan perintah:
-```
+```bash
 $ sudo wg-quick up wg0
 ```
 ![wg-quick](gambar/wgup.png)
 
 Sekarang client sudah terrhubung dengan server. Untuk mengecek dapat menjalankan perintah:
-```
+```bash
 $ sudo wg show
 ```
 ![wg-show](gambar/wgshow.png)
 
-Kemudian untuk mengecek IP dapat menggunakan google dengan mencari ```what is my ip```
-
 Untuk menghentikan sambungan VPN dapat dengan menjalankan perintah:
-```
+```bash
 $ sudo wg-quick down wg0
 ```
 
+### Windows
+Pastikan bahwa WireGuard pada server sudah jalan kemudian pada client pilih tunnel dengan nama yang sebelumnya disimpan kemudian klik Activate.
+
+![windows](gambar/windows.png)
+
+Untuk menghentikannya klik Deactivate.
+
+### Cek konektivitas VPN
+Kemudian untuk mengecek IP dapat menggunakan google dengan mencari ```what is my ip```
 
 # Referensi
 [`kembali ke atas`](#)
