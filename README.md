@@ -25,7 +25,7 @@ $ sudo apt-get install wireguard -y
 Unduh dan install programnya pada [link](https://download.wireguard.com/windows-client/wireguard-installer.exe) berikut.
 
 ### Sistem Operasi Lainnya
-Instalasi program pada sistem operasi lainnya dapat dilihat pada halaman [Installation Page WireGuard](https://www.wireguard.com/install/).
+Instalasi program pada sistem operasi lainnya dapat dilihat pada [Installation Page WireGuard](https://www.wireguard.com/install/).
 
 # Set up WireGuard pada Server
 [`kembali ke atas`](#)
@@ -110,7 +110,7 @@ Untuk menerapkan perubahan tersebut jalankan :
 $ sudo sysctl -p
 ```
 #### Port Forwarding
-Supaya client dapat terkoneksi ke server, perlu dibukanya port WireGuard yang digunakan untuk protokol UDP.
+Agar client dapat terkoneksi ke server, perlu dibukanya port WireGuard yang digunakan untuk protokol UDP.
 
 Jika menggunakan UFW untuk mengatur firewall maka perlu untuk membuka UDP pada port WireGuard yang digunakan (contoh ini menggunakan 51820) dengan:
 ```
@@ -184,7 +184,7 @@ $ sudo wg set wg0 peer CLIENT_PUBLIC_KEY allowed-ips CLIENT_IP_ADDRESS
 [`kembali ke atas`](#)
 
 ### Ubuntu / Debian
-Pastikan bahwa WireGuard pada server sudah jalan kemudian pada client jalankan perintah:
+Pastikan bahwa WireGuard pada server sudah berjalan, kemudian pada client jalankan perintah:
 ```bash
 $ sudo wg-quick up wg0
 ```
@@ -202,7 +202,7 @@ $ sudo wg-quick down wg0
 ```
 
 ### Windows
-Pastikan bahwa WireGuard pada server sudah jalan kemudian pada client pilih tunnel dengan nama yang sebelumnya disimpan kemudian klik Activate.
+Pastikan bahwa WireGuard pada server sudah berjalan, kemudian pada client pilih tunnel dengan nama yang sudah disimpan sebelumnya, kemudian klik Activate.
 
 ![windows](gambar/windows.png)
 
