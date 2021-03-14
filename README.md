@@ -22,10 +22,10 @@ $ sudo apt-get install wireguard -y
 ```
 
 ### Windows (Client)
-Unduh dan install programnya pada [link](https://download.wireguard.com/windows-client/wireguard-installer.exe) berikut.
+Unduh dan install programnya pada link berikut [link](https://download.wireguard.com/windows-client/wireguard-installer.exe) berikut.
 
 ### Sistem Operasi Lainnya
-Instalasi program pada sistem operasi lainnya dapat dilihat pada [Installation Page WireGuard](https://www.wireguard.com/install/).
+Instalasi program pada sistem operasi lainnya dapat dilihat pada halaman berikut [Installation Page WireGuard](https://www.wireguard.com/install/).
 
 # Set up WireGuard pada Server
 [`kembali ke atas`](#)
