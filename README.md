@@ -133,9 +133,11 @@ kemudian isi wg0.conf sesuai dengan [Konfigurasi Client Interface](#konfigurasi-
 
 ### Windows
 Pertama install wireguard pada windows. Setelah itu klik panah disamping `Add Tunnel` dan pilih `Add empty tunnel...`
+
 ![Add empty tunnel...](gambar/windows_client_new.png)
 
 Kemudian isi nama sesuai keinginan dan konfigurasinya sesuai dengan [Konfigurasi Client Interface](#konfigurasi-client-interface).
+
 ![Windows config](gambar/windows_client_config.png)
 
 Simpan public key yang diberikan dan klik Save.
