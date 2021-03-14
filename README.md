@@ -1,7 +1,7 @@
 ![1](gambar/wireguard.svg)
 
 
-[WireGuard](#WireGuard) | [Instalasi](#instalasi-WireGuard) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client](#set-up-wireguard-pada-client) | [Menghubungkan Client dengan VPN](#menghubungkan-linux-client-dengan-vpn-wireguard) | [Referensi](#referensi)
+[WireGuard](#WireGuard) | [Instalasi](#instalasi-WireGuard) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client](#set-up-wireguard-pada-client) | [Menghubungkan Client dengan VPN](#menghubungkan-client-dengan-vpn-wireguard) | [Referensi](#referensi)
 :---:|:---:|:---:|:---:|:---:|:---:
 
 
