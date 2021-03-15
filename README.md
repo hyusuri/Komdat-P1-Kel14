@@ -211,6 +211,12 @@ Untuk menghentikannya klik Deactivate.
 ### Cek konektivitas VPN
 Kemudian untuk mengecek IP dapat menggunakan google dengan mencari ```what is my ip```
 
+# Troubleshooting
+1. Jika Wireguard terkoneksi, tapi internet tidak terkoneksi dan tidak bisa melakukan ping ke google.com / 1.1.1.1, maka pastikan IP DNS di-set pada config client ```wg0.conf```.
+
+
+2. Jika Wireguard terkoneksi, tapi internet tidak terkoneksi dan bisa melakukan ping ke google.com / 1.1.1.1, maka pastikan MTU client dan server sama. Untuk cek MTU di server jalankan perintah ```ifconfig| grep -i MTU | awk '{print $1 $4}'```. Kemudian pada config client tambahkan di bagian Interface ```MTU = ...``` isi sesuai MTU server.
+
 # Referensi
 [`kembali ke atas`](#)
 
