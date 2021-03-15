@@ -1,8 +1,8 @@
 ![1](gambar/wireguard.svg)
 
 
-[WireGuard](#WireGuard) | [Instalasi](#instalasi-WireGuard) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client](#set-up-wireguard-pada-client) | [Menghubungkan Client dengan VPN](#menghubungkan-client-dengan-vpn-wireguard) | [Referensi](#referensi)
-:---:|:---:|:---:|:---:|:---:|:---:
+[WireGuard](#WireGuard) | [Instalasi](#instalasi-WireGuard) | [Set up WireGuard pada Server](#set-up-wireguard-pada-server) | [Set up WireGuard pada Client](#set-up-wireguard-pada-client) | [Menghubungkan Client dengan VPN](#menghubungkan-client-dengan-vpn-wireguard) | [Troubleshooting](#troubleshooting) | [Dis/advantages](#kelebihan-dan-kekurangan-wireguard) | [Referensi](#referensi) |
+:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
 
 
 # WireGuard
@@ -212,15 +212,44 @@ Untuk menghentikannya klik Deactivate.
 Kemudian untuk mengecek IP dapat menggunakan google dengan mencari ```what is my ip```
 
 # Troubleshooting
-1. Jika Wireguard terkoneksi, tapi internet tidak terkoneksi dan tidak bisa melakukan ping ke google.com / 1.1.1.1, maka pastikan IP DNS di-set pada config client ```wg0.conf```.
+[`kembali ke atas`](#)
 
+1. Jika Wireguard terkoneksi, tapi internet tidak terkoneksi dan tidak bisa melakukan ping ke google.com / 1.1.1.1, maka pastikan IP DNS di-set pada config client ```wg0.conf```.
 
 2. Jika Wireguard terkoneksi, tapi internet tidak terkoneksi dan bisa melakukan ping ke google.com / 1.1.1.1, maka pastikan MTU client dan server sama. Untuk cek MTU di server jalankan perintah ```ifconfig| grep -i MTU | awk '{print $1 $4}'```. Kemudian pada config client tambahkan di bagian Interface ```MTU = ...``` isi sesuai MTU server.
 
-# Referensi
+# Kelebihan dan Kekurangan Wireguard
 [`kembali ke atas`](#)
 
+### Kelebihan
+1. **Performance**, Wireguard adalah salah satu protokol VPN yang cepat karena menggunakan cryptographic primitives dengan kecepatan lebih dari 1000Mbps. Selain itu, Wireguard juga dijalankan dalam modul kernel Linux yang diharapkan memberikan kinerja dan bandwith yang lebih cepat dibanding protokol lain.
 
+2. **Configuration**, Wireguard tidak memerlukan certificate infrastructure karena hanya menggunakan Public Key dengan tujuan identifikasi dan enkripsi juga. Hal ini membuat Wireguard lebih mudah dikonfigurasi.
+
+3. **Security**, Wireguard menggunakan cryptographic key routing process. Dalam hal ini, alamat IP VPN digabungkan dengan public encryption key untuk keamanan yang lebih baik.
+
+4. **Platform Support**, Wireguard dapat berjalan di berbagai platform yaitu Linux, Windows, Mac OS, Android dan IOS.
+
+5. **Code Base**, Wireguard dibangun dengan struktur pengkodean yang lebih ramping dibanding protokol VPN lain, hal ini mempermudah proses audit sehingga memiliki tingkat kerentanan yang rendah.
+
+### Kekurangan
+1. **Privacy Concerns**, meski memiliki kelebihan dalam keamanan, Wireguard mengharuskan pengguna utnuk mencatat data mereka. Hal ini melanggar kebijakan privasi penyedia vpn.
+
+2. **Protocol Support**, Wireguard cenderung sering diblokir oleh admin jaringan, karena baru mendukung UDP.
+
+3. **Infrastructure Requirement**, Wireguard membutuhkan infrastruktur sendiri seperti server terpisah, distribusi dan manajemen kunci agar dapat berjalan baik.
+
+4. **Development Stage**, Wireguard masih dalam tahap pengembangan sehingga masih perlu banyak evaluasi keamanan.
+
+5. **Stability Issues**, masalah ini disebabkan karena Wireguard masih dalam tahap pengembangan sehingga mungkin mengalami banyak masalah stabilitas.
+
+Contoh VPN yang menggunakan protokol Wireguard : [NordVPN](https://nordvpn.com/), [Surfshark](https://surfshark.com/) dan [StrongVPN](https://strongvpn.com/)
+
+# Referensi
+[`kembali ke atas`](#)
 1. [WireGuard](https://www.wireguard.com/) - Wireguard
 2. [WireGuard VPN baru disempurnakan](https://id.wizcase.com/blog/wireguard-vpn-protokol-vpn-baru-dan-disempurnakan/) - idwizcase
 3. [How To Set Up WireGuard on Ubuntu 18.04](https://linuxize.com/post/how-to-set-up-wireguard-vpn-on-ubuntu-18-04/) - Linuxize
+4. [5 Advantages and Disadvantages of WireGuard](https://www.hitechwhizz.com/2020/08/5-advantages-and-disadvantages-benefits-drawbacks-of-wireguard.html) - hitechwhizz.com
+5. [WireGuard VPN: Pros and Cons](https://www.perfect-privacy.com/en/blog/wireguard-vpn-pros-and-cons) - perfect-privacy.com
+6. [Best VPNs with Wireguard in 2021](https://www.comparitech.com/blog/vpn-privacy/best-vpn-wireguard/) - comparitech.com
